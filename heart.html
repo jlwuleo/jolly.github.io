@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Heart Hello World</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<canvas id="heart" height="600px" width="800px"></canvas>
+
+<script type="text/javascript">
+
+    var canvas = $("#heart")[0];
+    var offsetX = canvas.width / 2.5;
+    var offsetY = canvas.height / 2 - 55;
+    var ctx = canvas.getContext("2d");
+    startHeartAnimation();
+
+    function startHeartAnimation() {
+        var interval = 50;
+        var angle = 10;
+        var heart = new Array();
+        var animationTimer = setInterval(function () {
+            var point = getHeartPoint(angle);
+
+            print(point[0],point[1]);
+
+            if (angle >= 30) {
+                clearInterval(animationTimer);
+            } else {
+                angle += 0.2;
+            }
+        }, interval);
+    }
+
+    function getHeartPoint(angle) {
+        var t = angle / Math.PI;
+        var x = 19.5 * (16 * Math.pow(Math.sin(t), 3));
+        var y = - 20 * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        return new Array(offsetX + x, offsetY + y);
+    }
+
+    function print(x,y)
+    {
+        ctx.fillText("Hello      World!",x,y);
+    }
+</script>
+</body>
+</html>
