@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>详细</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/angular.js/1.6.1/angular.min.js"></script>
+    <script src="./index.js"></script>
+    <style type="text/css">
+        .text-success{color: #27c24c;}
+        .text-danger{color: #f05050;}
+    </style>
+</head>
+<body>
+    <div ng-controller="MaJiangController" style="text-align: center;">
+        <table class="table table-hover table-striped table-bordered">
+            <tr>
+                <th colspan="5" class="text-center">2017年 一览表</th>
+            </tr>
+            <tr>
+                <th class="text-center">地点</th>
+                <th class="text-center">开始时间</th>
+                <th class="text-center">结束时间</th>
+                <th class="text-center">时长</th>
+                <th class="text-center">RMB</th>
+            </tr>
+            <tr ng-repeat="item in items">
+                <td>{{item.address}}</td>
+                <td>
+                    <span ng-if="item.start">{{item.start}}({{item.startDay}})</span>
+                </td>
+                <td>
+                    <span ng-if="item.end">{{item.end}}({{item.endDay}})</span>
+                </td>
+                <td>{{item.duration}}</td>
+                <td>
+                    <span ng-class="{'text-success' : item.rmb >= 0, 'text-danger' : item.rmb < 0}">{{item.rmb}}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
