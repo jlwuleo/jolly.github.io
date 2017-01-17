@@ -36,6 +36,13 @@ app.controller('MaJiangController', ['$scope', function($scope) {
 
     var day = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
+    var convertDate = function(date){
+        var tmp = date.split(' ');
+        var tmp1 = tmp[0].split('-');
+        var dt = tmp1[1] + '/' + tmp1[2] + '/' + tmp1[0] + ' ' + tmp[1]
+        return new Date(dt);
+    }
+
     var getTimeFormat = function(time) {
 
         var zero = function(i){
@@ -44,17 +51,17 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         
         var h = parseInt(time / 3600);
         var m = parseInt(time / 60 % 60);
-        
         return zero(h) + '小时' + zero(m) + '分钟';
     }
 
     var totalTime = 0;
     var totalRmb = 0;
     angular.forEach(data, function(i){
-        var startDate = new Date(i.start);
-        var endDate = new Date(i.end);
+        var startDate = convertDate(i.start);
+        var endDate = convertDate(i.end);
 
         var time = (endDate - startDate) / 1000;
+
         totalTime += time;
         totalRmb += i.rmb;
 
