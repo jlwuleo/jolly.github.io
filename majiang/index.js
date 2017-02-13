@@ -12,6 +12,7 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         {start : '2017-02-10 20:00', end : '2017-02-11 06:00', address : '岗头市场11栋楼下', rmb : -340},
         {start : '2017-02-11 21:00', end : '2017-02-12 05:00', address : '岗头市场11栋楼下', rmb : -2300},
         {start : '2017-02-12 15:00', end : '2017-02-12 22:00', address : '瓦窑排', rmb : +300},
+        
     ];
 
     var day = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
