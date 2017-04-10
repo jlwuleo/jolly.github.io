@@ -29,7 +29,7 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         
         {start : '2017-03-25 14:00', end : '2017-03-25 00:00', address : '岗头市场', rmb : +80},
 
-        {start : '2017-04-07 21:00', end : '2017-04-08 02:00', address : '岗头市场', rmb : -140},
+        {start : '2017-04-07 21:00', end : '2017-04-08 02:00', address : '岗头市场', rmb : -640},
         {start : '2017-04-08 21:00', end : '2017-04-09 00:00', address : '岗头市场', rmb : +520},
         {start : '2017-04-09 16:00', end : '2017-04-09 21:00', address : '岗头市场', rmb : -600},
         
