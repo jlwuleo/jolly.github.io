@@ -42,6 +42,8 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         {start : '2017-04-29 13:00', end : '2017-04-30 03:00', address : '黄君山至尊宝', rmb : +1500},
         {start : '2017-05-01 00:00', end : '2017-05-01 14:00', address : '瓦窑排', rmb : -350},
         {start : '2017-05-01 16:00', end : '2017-05-01 20:00', address : '瓦窑排', rmb : +90},
+
+        {start : '2017-05-06 14:00', end : '2017-05-07 10:00', address : '马蹄山至尊宝', rmb : +5800},
     ];
 
     var day = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
