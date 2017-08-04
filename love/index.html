@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>33 I love you</title>
+    <style>
+        /* basic styles for black background and crosshair cursor */
+        body {
+            background: #000;
+            margin: 0;
+        }
+
+        canvas {
+            cursor: crosshair;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="heart"></canvas>
+<audio autoplay="autopaly">
+    <source src="多喜欢你.m4a" type="audio/mp3" />
+</audio>
+<script type="text/javascript">
+
+    var together = new Date();
+    together.setFullYear(2014, 2, 12);
+    together.setHours(0);
+    together.setMinutes(0);
+    together.setSeconds(0);
+    together.setMilliseconds(0);
+
+    window.requestAnimFrame = ( function() {
+        return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function( callback ) {
+                    window.setTimeout( callback, 1000 / 60 );
+                };
+    })();
+
+    // now we will setup our basic variables for the demo
+    var canvas = document.getElementById( 'heart' ),
+            ctx = canvas.getContext( '2d' ),
+            cw = window.innerWidth,
+            ch = window.innerHeight,
+            fireworks = [],
+            particles = [],
+            hue = 120,
+            limiterTotal = 5,
+            limiterTick = 0,
+            timerTotal = 80,
+            timerTick = 0,
+            mousedown = false,
+            mx,
+            my;
+    canvas.width = cw;
+    canvas.height = ch;
+
+    var offsetX = canvas.width / 2 + 110;
+    var offsetY = canvas.height / 2 - 55;
+
+    /**
+     * 画心形图
+     */
+    function drawHeart() {
+        var interval = 20;
+        var angle = 10;
+        var heart = new Array();
+        var animationTimer = setInterval(function () {
+            var point = calculateHeartPoint(angle);
+
+            print(point[0],point[1]);
+
+            if (angle >= 30) {
+                //clearInterval(animationTimer);
+                angle = 10;
+            } else {
+                angle += 0.2;
+            }
+        }, interval);
+    }
+
+    function calculateHeartPoint(angle) {
+        var t = angle / Math.PI;
+        var x = 19.5 * (16 * Math.pow(Math.sin(t), 3));
+        var y = - 20 * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        return new Array(offsetX + x, offsetY + y);
+    }
+
+    function print(x,y) {
+        fireworks.push( new Firework( cw * 5, ch, x, y, false) );
+    }
+
+    function drawILoveU() {
+        ctx.fillStyle = "red";
+        ctx.font="80px Verdana";
+        ctx.fillText("I ♥ U",offsetX - 100,offsetY);
+        ctx.fillText("33",offsetX - 50,offsetY + 80);
+    }
+
+    function sayMyHeart() {
+        var w = 50;
+        var h = offsetY - 180;
+        ctx.fillStyle = "White";
+        ctx.font="20px Verdana";
+        ctx.fillText("亲爱的 遇见你 是我一生最大的幸福",w,h+=30);
+        ctx.fillText("对我来说 你就是我的The One",w,h+=30);
+        ctx.fillText("我会好好的对你",w,h+=30);
+        ctx.fillText("好好的喜欢着你",w,h+=30);
+        ctx.fillText("好好的陪着你",w,h+=30);
+        ctx.fillText("陪你去你想去的任何地方",w,h+=30);
+        ctx.fillText("用心走完以后的道路",w,h+=30);
+        ctx.fillText("不管以后日子多艰难",w,h+=30);
+        ctx.fillText("我喜欢的人永远是你",w,h+=30);
+
+    }
+
+    function timeElapse(){
+        var w = 50;
+        var h = offsetY + 200;
+        var current = Date();
+        var seconds = (Date.parse(current) - Date.parse(together)) / 1000;
+        var days = Math.floor(seconds / (3600 * 24));
+        seconds = seconds % (3600 * 24);
+        var hours = Math.floor(seconds / 3600);
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        seconds = seconds % 3600;
+        var minutes = Math.floor(seconds / 60);
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        seconds = seconds % 60;
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        ctx.fillStyle = "White";
+        ctx.font="20px Verdana";
+        ctx.fillText("亲爱的，我喜欢你，已经是……",w,h+=30);
+
+        var result = days + " 天 " + hours + " 小时 " + minutes + " 分 " + seconds + " 秒";
+        ctx.fillText(result,w+=100,h+=30);
+
+        ctx.fillText("爱你直到永永远远。          -90",w+=100,h+=30);
+    }
+
+    function doSomeThing(){
+        drawILoveU();
+        sayMyHeart();
+        timeElapse();
+    }
+
+    // get a random number within a range
+    function random( min, max ) {
+        return Math.random() * ( max - min ) + min;
+    }
+
+    // calculate the distance between two points
+    function calculateDistance( p1x, p1y, p2x, p2y ) {
+        var xDistance = p1x - p2x,
+                yDistance = p1y - p2y;
+        return Math.sqrt( Math.pow( xDistance, 2 ) + Math.pow( yDistance, 2 ) );
+    }
+
+    // create firework
+    function Firework( sx, sy, tx, ty, hasParticle) {
+        // actual coordinates
+        this.x = sx;
+        this.y = sy;
+        // starting coordinates
+        this.sx = sx;
+        this.sy = sy;
+        // target coordinates
+        this.tx = tx;
+        this.ty = ty;
+        // distance from starting point to target
+        this.distanceToTarget = calculateDistance( sx, sy, tx, ty );
+        this.distanceTraveled = 0;
+        // track the past coordinates of each firework to create a trail effect, increase the coordinate count to create more prominent trails
+        this.coordinates = [];
+        this.coordinateCount = 3;
+        // populate initial coordinate collection with the current coordinates
+        while( this.coordinateCount-- ) {
+            this.coordinates.push( [ this.x, this.y ] );
+        }
+        this.angle = Math.atan2( ty - sy, tx - sx );
+        this.speed = 2;
+        this.acceleration = 1.05;
+        this.brightness = random( 50, 70 );
+        // circle target indicator radius
+        this.targetRadius = 1;
+
+        this.hasParticle = hasParticle == undefined ? true : false;
+    }
+
+    // update firework
+    Firework.prototype.update = function( index ) {
+        // remove last item in coordinates array
+        this.coordinates.pop();
+        // add current coordinates to the start of the array
+        this.coordinates.unshift( [ this.x, this.y ] );
+
+        // cycle the circle target indicator radius
+        if( this.targetRadius < 8 ) {
+            this.targetRadius += 0.3;
+        } else {
+            this.targetRadius = 1;
+        }
+
+        // speed up the firework
+        this.speed *= this.acceleration;
+
+        // get the current velocities based on angle and speed
+        var vx = Math.cos( this.angle ) * this.speed,
+                vy = Math.sin( this.angle ) * this.speed;
+        // how far will the firework have traveled with velocities applied?
+        this.distanceTraveled = calculateDistance( this.sx, this.sy, this.x + vx, this.y + vy );
+
+        // if the distance traveled, including velocities, is greater than the initial distance to the target, then the target has been reached
+        if( this.distanceTraveled >= this.distanceToTarget ) {
+            if(this.hasParticle) {
+                createParticles(this.tx, this.ty);
+            }
+            // remove the firework, use the index passed into the update function to determine which to remove
+            fireworks.splice( index, 1 );
+        } else {
+            // target not reached, keep traveling
+            this.x += vx;
+            this.y += vy;
+        }
+    }
+
+    // draw firework
+    Firework.prototype.draw = function() {
+        ctx.beginPath();
+        // move to the last tracked coordinate in the set, then draw a line to the current x and y
+        ctx.moveTo( this.coordinates[ this.coordinates.length - 1][ 0 ], this.coordinates[ this.coordinates.length - 1][ 1 ] );
+
+        if(this.hasParticle) {
+            ctx.lineTo(this.x, this.y);
+        }
+
+        ctx.strokeStyle = 'hsl(' + hue + ', 100%, ' + this.brightness + '%)';
+        ctx.stroke();
+
+        ctx.beginPath();
+        // draw the target for this firework with a pulsing circle
+        ctx.arc( this.tx, this.ty, this.targetRadius, 0, Math.PI * 2 );
+        ctx.stroke();
+    }
+
+    // create particle
+    function Particle( x, y ) {
+        this.x = x;
+        this.y = y;
+        // track the past coordinates of each particle to create a trail effect, increase the coordinate count to create more prominent trails
+        this.coordinates = [];
+        this.coordinateCount = 5;
+        while( this.coordinateCount-- ) {
+            this.coordinates.push( [ this.x, this.y ] );
+        }
+        // set a random angle in all possible directions, in radians
+        this.angle = random( 0, Math.PI * 2 );
+        this.speed = random( 1, 10 );
+        // friction will slow the particle down
+        this.friction = 0.95;
+        // gravity will be applied and pull the particle down
+        this.gravity = 1;
+        // set the hue to a random number +-20 of the overall hue variable
+        this.hue = random( hue - 20, hue + 20 );
+        this.brightness = random( 50, 80 );
+        this.alpha = 1;
+        // set how fast the particle fades out
+        this.decay = random( 0.015, 0.03 );
+    }
+
+    // update particle
+    Particle.prototype.update = function( index ) {
+        // remove last item in coordinates array
+        this.coordinates.pop();
+        // add current coordinates to the start of the array
+        this.coordinates.unshift( [ this.x, this.y ] );
+        // slow down the particle
+        this.speed *= this.friction;
+        // apply velocity
+        this.x += Math.cos( this.angle ) * this.speed;
+        this.y += Math.sin( this.angle ) * this.speed + this.gravity;
+        // fade out the particle
+        this.alpha -= this.decay;
+
+        // remove the particle once the alpha is low enough, based on the passed in index
+        if( this.alpha <= this.decay ) {
+            particles.splice( index, 1 );
+        }
+    }
+
+    // draw particle
+    Particle.prototype.draw = function() {
+        ctx. beginPath();
+        // move to the last tracked coordinates in the set, then draw a line to the current x and y
+        ctx.moveTo( this.coordinates[ this.coordinates.length - 1 ][ 0 ], this.coordinates[ this.coordinates.length - 1 ][ 1 ] );
+        ctx.lineTo( this.x, this.y );
+        ctx.strokeStyle = 'hsla(' + this.hue + ', 100%, ' + this.brightness + '%, ' + this.alpha + ')';
+        ctx.stroke();
+    }
+
+    // create particle group/explosion
+    function createParticles( x, y ) {
+        // increase the particle count for a bigger explosion, beware of the canvas performance hit with the increased particles though
+        var particleCount = 30;
+        while( particleCount-- ) {
+            particles.push( new Particle( x, y ) );
+        }
+    }
+
+    // main demo loop
+    function loop() {
+        doSomeThing();
+        // this function will run endlessly with requestAnimationFrame
+        requestAnimFrame( loop );
+
+        // increase the hue to get different colored fireworks over time
+        hue += 0.5;
+
+        // normally, clearRect() would be used to clear the canvas
+        // we want to create a trailing effect though
+        // setting the composite operation to destination-out will allow us to clear the canvas at a specific opacity, rather than wiping it entirely
+        ctx.globalCompositeOperation = 'destination-out';
+        // decrease the alpha property to create more prominent trails
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect( 0, 0, cw, ch );
+        // change the composite operation back to our main mode
+        // lighter creates bright highlight points as the fireworks and particles overlap each other
+        ctx.globalCompositeOperation = 'lighter';
+
+        // loop over each firework, draw it, update it
+        var i = fireworks.length;
+        while( i-- ) {
+            fireworks[ i ].draw();
+            fireworks[ i ].update( i );
+        }
+
+        // loop over each particle, draw it, update it
+        var i = particles.length;
+        while( i-- ) {
+            particles[ i ].draw();
+            particles[ i ].update( i );
+        }
+
+        // launch fireworks automatically to random coordinates, when the mouse isn't down
+        if( timerTick >= timerTotal ) {
+            if( !mousedown ) {
+                // start the firework at the bottom middle of the screen, then set the random target coordinates, the random y coordinates will be set within the range of the top half of the screen
+                fireworks.push( new Firework( cw / 2, ch, random( 0, cw ), random( 0, ch / 2 ) ) );
+                timerTick = 0;
+            }
+        } else {
+            timerTick++;
+        }
+
+        // limit the rate at which fireworks get launched when mouse is down
+        if( limiterTick >= limiterTotal ) {
+            if( mousedown ) {
+                // start the firework at the bottom middle of the screen, then set the current mouse coordinates as the target
+                fireworks.push( new Firework( cw / 2, ch, mx, my ) );
+                limiterTick = 0;
+            }
+        } else {
+            limiterTick++;
+        }
+    }
+
+    // mouse event bindings
+    // update the mouse coordinates on mousemove
+    canvas.addEventListener( 'mousemove', function( e ) {
+        mx = e.pageX - canvas.offsetLeft;
+        my = e.pageY - canvas.offsetTop;
+    });
+
+    // toggle mousedown state and prevent canvas from being selected
+    canvas.addEventListener( 'mousedown', function( e ) {
+        e.preventDefault();
+        mousedown = true;
+    });
+
+    canvas.addEventListener( 'mouseup', function( e ) {
+        e.preventDefault();
+        mousedown = false;
+    });
+
+    // once the window loads, we are ready for some fireworks!
+    window.onload = loop() , drawHeart();
+</script>
+</body>
+</html>
