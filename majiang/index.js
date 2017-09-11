@@ -44,6 +44,11 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         {start : '2017-05-01 16:00', end : '2017-05-01 20:00', address : '瓦窑排', rmb : +90},
 
         {start : '2017-05-06 14:00', end : '2017-05-07 10:00', address : '马蹄山至尊宝', rmb : +5800},
+
+        {start : '2017-09-02 15:00', end : '2017-09-03 01:00', address : '五和公爵', rmb : -380},
+
+        {start : '2017-09-09 21:00', end : '2017-09-10 04:00', address : '五和公爵', rmb : +800},
+        {start : '2017-09-10 13:00', end : '2017-09-10 22:00', address : '五和公爵', rmb : -370},
     ];
 
     var day = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
@@ -82,7 +87,7 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         i.endDay = day[endDate.getDay()];
     });
 
-    data.push({duration : getTimeFormat(totalTime),rmb : totalRmb})
+    data.push({address : '总计', duration : getTimeFormat(totalTime),rmb : totalRmb})
 
     $scope.items = data;
 }]);
