@@ -60,6 +60,8 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         {start : '2017-10-14 14:00', end : '2017-10-14 20:00', address : '湖贝', rmb : +300},
 
         {start : '2017-10-21 14:00', end : '2017-10-22 03:00', address : '岗头红海', rmb : +200},
+
+        {start : '2017-10-28 13:00', end : '2017-10-29 03:00', address : '五和公爵', rmb : -5},
         
     ];
 
@@ -94,6 +96,7 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         totalTime += time;
         totalRmb += i.rmb;
 
+        i.time = time;
         i.duration = getTimeFormat(time);
         i.startDay = day[startDate.getDay()];
         i.endDay = day[endDate.getDay()];

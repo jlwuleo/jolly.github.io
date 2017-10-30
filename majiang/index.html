@@ -32,7 +32,7 @@
                 <td>
                     <span ng-if="item.end">{{item.end}}({{item.endDay}})</span>
                 </td>
-                <td>{{item.duration}}</td>
+                <td><span ng-class="{'text-danger' : item.time >= 3600 * 8}">{{item.duration}}</span></td>
                 <td>
                     <span ng-class="{'text-success' : item.rmb >= 0, 'text-danger' : item.rmb < 0}">{{item.rmb}}</span>
                 </td>
