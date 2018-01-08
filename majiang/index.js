@@ -62,6 +62,12 @@ app.controller('MaJiangController', ['$scope', function($scope) {
         {start : '2017-10-21 14:00', end : '2017-10-22 03:00', address : '岗头红海', rmb : +200},
 
         {start : '2017-10-28 13:00', end : '2017-10-29 03:00', address : '五和公爵', rmb : -5},
+
+        {start : '2017-11-18 20:00', end : '2017-11-19 09:00', address : '岗头市场', rmb : +900},
+        {start : '2017-11-19 17:00', end : '2017-11-19 23:00', address : '瓦窑排', rmb : -210},
+
+        {start : '2017-12-02 15:00', end : '2017-12-03 06:00', address : '五和公爵', rmb : -1700},
+        {start : '2017-12-09 14:00', end : '2017-12-09 22:00', address : '五和公爵', rmb : +800},
         
     ];
 
